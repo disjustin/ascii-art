@@ -9,7 +9,7 @@
 
 ## Summary
 
-`print_ascii_text.py` reads a specified input and generates a 5x7 ascii text in `output.txt`. Handles ASCII characters #32-122 and prints #32-96, [see here for ascii table](https://www.asciitable.com/).
+`print_ascii_text.py` reads a specified input and generates 5x7 ascii text in `output.txt`. Handles ASCII characters #32-122 and prints #32-96, [see here for ascii table](https://www.asciitable.com/).
 
 ## Usage
 
