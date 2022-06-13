@@ -5,6 +5,7 @@
 	- [Table of Contents](#table-of-contents)
 	- [Summary](#summary)
 	- [Usage](#usage)
+	- [Future](#future)
 
 ## Summary
 
@@ -44,3 +45,10 @@ H   H E     L     L     O   O    W W W O   O R   R L     D   D
 H   H EEEEE LLLLL LLLLL  OOO      W W   OOO  R   R LLLLL DDDD  
                                                                
 ```
+
+## Future
+* output file options, overwrite or append (default)
+* command short/long arguments (-h/--help, -v/--verbose, -q/--quiet)
+* add lowercase ascii
+
+> Updated 6/13/22
