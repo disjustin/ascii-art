@@ -6,7 +6,6 @@
   - [Table of Contents](#table-of-contents)
   - [Summary](#summary)
   - [Usage](#usage)
-  - [Future](#future)
 
 ## Summary
 
@@ -37,8 +36,11 @@ python print_ascii_text.py --input "BIG TEXT" --buffer 2 --bold --output art.txt
 # Stdin input
 echo "test" | python print_ascii_text.py --stdin --buffer 1
 
-# No uppercase
-python print_ascii_text.py --input "Hello" --no-upper
+# Lowercase
+python print_ascii_text.py --input "Hello" --case lower
+
+# Mixed case (none)
+python print_ascii_text.py --input "Hello World" --case none
 ```
 
 **Full CLI Options:**
@@ -46,7 +48,7 @@ python print_ascii_text.py --input "Hello" --no-upper
 ```plain
 usage: print_ascii_text.py [-h] [--input INPUT] [--stdin] [--output OUTPUT]
                            [--mode {append,overwrite}] [--buffer BUFFER]
-                           [--bold] [--no-upper] [--verbose]
+                           [--bold] [--case {upper,lower,none}] [--verbose]
 
 Generate ASCII art text.
 
@@ -59,33 +61,54 @@ optional arguments:
                        Input text string
   --stdin, -s          Read input from stdin
   --output OUTPUT, -o OUTPUT
-                       Output file (default: output.txt)
+                       Output file (default: stdout)
   --mode {append,overwrite}, -m {append,overwrite}
                        Output mode (default: append)
   --buffer BUFFER, -B BUFFER
                        Blank lines above/below font (default: 0)
   --bold, -b           Use bold font variant
-  --no-upper, -u       Do not uppercase input
+  --case {upper,lower,none}, -c {upper,lower,none}
+                       Case conversion (default: none)
   --verbose, -v        Print debug info
 ```
 
 **Sample Output (default):**
 
 ```plain
-H   H EEEEE L     L      OOO     W   W  OOO  RRRR  L     DDDD
-H   H E     L     L     O   O    W   W O   O R   R L     D   D
-HHHHH EEEEE L     L     O   O    W   W O   O RRRR  L     D   D
-H   H E     L     L     O   O    W W W O   O R   R L     D   D
-H   H E     L     L     O   O    W W W O   O R   R L     D   D
-H   H EEEEE LLLLL LLLLL  OOO      W W   OOO  R   R LLLLL DDDD
+# python print_ascii_text.py "Hello World" --bold
+
+#   #       ##    ##                #   #             ##       #
+#   #        #     #                #   #              #       #
+#####  ##    #     #     ##         #   #  ##   ###    #     ###
+#   # # ##   #     #    #  #        # # # #  #  #  #   #    #  #
+#   # ##     #     #    #  #        # # # #  #  #      #    #  #
+#   #  ##   ###   ###    ##          # #   ##   #     ###    ###
+
+python print_ascii_text.py "Hello World"
+
+H   H       ##    ##                W   W             ##       #
+H   H        #     #                W   W              #       #
+HHHHH  ##    #     #     ##         W   W  ##   ###    #     ###
+H   H # ##   #     #    #  #        W W W #  #  #  #   #    #  #
+H   H ##     #     #    #  #        W W W #  #  #      #    #  #
+H   H  ##   ###   ###    ##          W W   ##   #     ###    ###
+
+python print_ascii_text.py "Hello World" --case upper
+
+H   H EEEEE L     L      OOO        W   W  OOO  RRRR  L     DDDD
+H   H E     L     L     O   O       W   W O   O R   R L     D   D
+HHHHH EEEEE L     L     O   O       W   W O   O RRRR  L     D   D
+H   H E     L     L     O   O       W W W O   O R   R L     D   D
+H   H E     L     L     O   O       W W W O   O R   R L     D   D
+H   H EEEEE LLLLL LLLLL  OOO         W W   OOO  R   R LLLLL DDDD
+
+python print_ascii_text.py "Hello World" --case lower
+
+#           ##    ##                                  ##       #
+#            #     #                                   #       #
+###    ##    #     #     ##         #  #   ##   ###    #     ###
+#  #  # ##   #     #    #  #        #  #  #  #  #  #   #    #  #
+#  #  ##     #     #    #  #        ####  #  #  #      #    #  #
+#  #   ##   ###   ###    ##         ####   ##   #     ###    ###
+
 ```
-
-## Future
-
-- Add lowercase font support
-
-- Custom font loading
-- Color output options
-- Web interface
-
-> Updated 6/13/22

@@ -68,37 +68,48 @@ FONT = {
     '^': ['  ^  ', ' ^ ^ ', '     ', '     ', '     ', '     ', '     '],
     '_': ['     ', '     ', '     ', '     ', '     ', ' ___ ', '     '],
     '`': [' `   ', '  `  ', '     ', '     ', '     ', '     ', '     '],
-    'a': [],
-    'b': [],
-    'c': [],
-    'd': [],
-    'e': [],
-    'f': [],
-    'g': [],
-    'h': [],
-    'i': [],
-    'j': [],
-    'k': [],
-    'l': [],
-    'm': [],
-    'n': [],
-    'o': [],
-    'p': [],
-    'q': [],
-    'r': [],
-    's': [],
-    't': [],
-    'u': [],
-    'v': [],
-    'w': [],
-    'x': [],
-    'y': [],
-    'z': [],
+    'a': ['     ', '     ', ' ### ', '#  # ', '# ## ', ' # # ', '     '],
+    'b': ['#    ', '#    ', '###  ', '#  # ', '#  # ', '###  ', '     '],
+    'c': ['     ', '     ', ' ##  ', '#    ', '#    ', ' ##  ', '     '],
+    'd': ['   # ', '   # ', ' ### ', '#  # ', '#  # ', ' ### ', '     '],
+    'e': ['     ', '     ', ' ##  ', '# ## ', '##   ', ' ##  ', '     '],
+    'f': ['  #  ', ' # # ', ' #   ', '###  ', ' #   ', ' #   ', '     '],
+    'g': ['     ', '     ', ' ### ', '#  # ', ' ##  ', '#    ', ' ### '],
+    'h': ['#    ', '#    ', '###  ', '#  # ', '#  # ', '#  # ', '     '],
+    'i': [' #   ', '     ', '##   ', ' #   ', ' #   ', '###  ', '     '],
+    'j': ['  #  ', '     ', '  #  ', '  #  ', '  #  ', '# #  ', ' #   '],
+    'k': ['#    ', '#    ', '# #  ', '##   ', '# #  ', '#  # ', '     '],
+    'l': ['##   ', ' #   ', ' #   ', ' #   ', ' #   ', '###  ', '     '],
+    'm': ['     ', '     ', '# #  ', '#### ', '#  # ', '#  # ', '     '],
+    'n': ['     ', '     ', '###  ', '#  # ', '#  # ', '#  # ', '     '],
+    'o': ['     ', '     ', ' ##  ', '#  # ', '#  # ', ' ##  ', '     '],
+    'p': ['     ', '     ', '###  ', '#  # ', '#  # ', '###  ', '#    '],
+    'q': ['     ', '     ', ' ### ', '#  # ', '#  # ', ' ### ', '   # '],
+    'r': ['     ', '     ', '###  ', '#  # ', '#    ', '#    ', '     '],
+    's': ['     ', '     ', ' ### ', '##   ', '  ## ', '###  ', '     '],
+    't': [' #   ', ' #   ', '###  ', ' #   ', ' #   ', '  ## ', '     '],
+    'u': ['     ', '     ', '#  # ', '#  # ', '#  # ', ' ### ', '     '],
+    'v': ['     ', '     ', '# #  ', '# #  ', '# #  ', ' #   ', '     '],
+    'w': ['     ', '     ', '#  # ', '#  # ', '#### ', '#### ', '     '],
+    'x': ['     ', '     ', '#  # ', ' ##  ', ' ##  ', '#  # ', '     '],
+    'y': ['     ', '     ', '#  # ', '#  # ', ' # # ', '  #  ', ' #   '],
+    'z': ['     ', '     ', '#### ', '  #  ', ' #   ', '     ', '     '],
     '{': [],
     '|': [],
     '}': [],
     '~': [],
 }
+
+
+
+def get_char_lines(c, bold, case):
+    if c not in FONT:
+        print(f"Error: Unknown character '{c}'", file=sys.stderr)
+        sys.exit(1)
+    lines = FONT[c]
+    if bold:
+        lines = [''.join('#' if ch != ' ' else ch for ch in line) for line in lines]
+    return lines
 
 def main():
     parser = argparse.ArgumentParser(description="Generate ASCII art text.")
@@ -109,7 +120,7 @@ def main():
     parser.add_argument('--mode', '-m', choices=['append', 'overwrite'], default='append', help='Output mode')
     parser.add_argument('--buffer', '-B', type=int, default=0, help='Blank lines above/below font (default: 0)')
     parser.add_argument('--bold', '-b', action='store_true', help='Use bold font variant')
-    parser.add_argument('--no-upper', '-u', action='store_true', help='Do not uppercase input')
+    parser.add_argument('--case', '-c', choices=['upper', 'lower', 'none'], default='none', help='Case conversion (default: none)')
     parser.add_argument('--verbose', '-v', action='store_true', help='Print debug info')
 
     args = parser.parse_args()
@@ -124,25 +135,20 @@ def main():
     else:
         input_text = input()
 
-    if not args.no_upper:
+    if args.case == 'upper':
         input_text = input_text.upper()
+    elif args.case == 'lower':
+        input_text = input_text.lower()
+    # none: as is
 
     if args.verbose:
         print(f"Input: {input_text}")
 
     # Render
-    def get_char_lines(c, bold):
-        if c not in FONT or not FONT[c]:
-            c = '?'
-        lines = FONT[c][:7]  # base 7
-        if bold:
-            lines = [''.join('#' if ch != ' ' else ch for ch in line) for line in lines]
-        return lines
-
     total_height = 7 + 2 * args.buffer
     output_lines = [''] * total_height
     for c in input_text:
-        char_lines = get_char_lines(c, args.bold)
+        char_lines = get_char_lines(c, args.bold, args.case)
         for i in range(7):
             output_lines[args.buffer + i] += char_lines[i] + ' '
 
